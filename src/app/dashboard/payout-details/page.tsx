@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { PayoutTable } from "@/app/dashboard/payout-details/components/PayoutTable";
 import { fetchNews } from "@/redux/reducer";
+import ExportToCSV from "./components/ExportToCSV";
+import ExportToPDF from "./components/ExportToPDF";
 
 const PayoutAdmin = () => {
   const dispatch = useAppDispatch();
@@ -49,10 +51,26 @@ const PayoutAdmin = () => {
     0
   );
 
+  // Combine payouts and articles for exporting
+  const combinedData = articles.map((article) => ({
+    author: article.author || "Unknown",
+    title: article.title,
+    publishedAt: article.publishedAt,
+    payout: payouts[article.url] || 0
+  }));
+
   return (
     <div className="p-4">
-      <h1 className="text-3xl font-semibold mb-4">Payout Calculator</h1>
-      <div className="mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start sm:space-x-6">
+        <h1 className="text-3xl font-bold mb-6"> Payout Calculator</h1>
+
+        <div className="flex flex-wrap gap-4 sm:gap-6">
+          <ExportToCSV data={combinedData} />
+          <ExportToPDF data={combinedData} />
+        </div>
+      </div>
+
+      <div className="my-6">
         <label htmlFor="payoutRate" className="block text-lg font-medium">
           Payout Rate per Article/Blog:
           <sup className="text-red-500">
