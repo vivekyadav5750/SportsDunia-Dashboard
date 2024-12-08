@@ -17,8 +17,7 @@ const authConfig = {
           type: "password"
         }
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // console.log("credentials", credentials);
         const name = (credentials?.email as string).split("@")[0];
         const user = {
