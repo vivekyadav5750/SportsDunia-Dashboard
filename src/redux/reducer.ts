@@ -19,8 +19,9 @@ export const fetchNews = createAsyncThunk(
     if (!response.ok) {
       throw new Error("Failed to fetch news");
     }
-    const data = await response.json();
-    console.log("data", data);
+    const data = (await response.json()) as { articles: Article[] };
+    //  remove article which author is null or undefined
+    data.articles = data.articles.filter((article) => article.author);
     return data.articles;
   }
 );
