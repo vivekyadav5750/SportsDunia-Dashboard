@@ -1,54 +1,34 @@
 // pages/NewsAnalytics.tsx
 
-'use client';
+"use client";
 
-import React, { useEffect, useMemo } from 'react';
-import { Bar, BarChart, CartesianGrid, Pie, PieChart, Tooltip, XAxis, YAxis, Legend } from 'recharts';
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { fetchNews } from '@/redux/reducer';
+  CardTitle
+} from "@/components/ui/card";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchNews } from "@/redux/reducer";
+import AuthorPieChart from "./components/AuthorPieChart";
+import ContentPieChart from "./components/ContentPieChart";
 
 const NewsAnalytics = () => {
   const dispatch = useAppDispatch();
   const { articles, loading, error } = useAppSelector((state) => state.news);
 
   useEffect(() => {
-    dispatch(fetchNews('sports'));
+    dispatch(fetchNews("sports"));
   }, [dispatch]);
 
-  // Data Transformation for Charts
-  const authorData = useMemo(() => {
-    const authorMap: Record<string, number> = {};
-    articles.forEach((article) => {
-      const author = article.author || 'Unknown Author';
-      authorMap[author] = (authorMap[author] || 0) + 1;
-    });
-
-    return Object.entries(authorMap).map(([author, count]) => ({
-      name: author,
-      value: count,
-    }));
-  }, [articles]);
-
-  const typeData = useMemo(() => {
-    return articles.map((article) => ({
-      name: article.title,
-      value: article.content.length,
-    }));
-  }, [articles]);
-
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="text-center">Loading...</p>;
   }
 
   if (error) {
-    return <p>Error fetching news: {error}</p>;
+    return <p className="text-center text-red-500">Error: {error}</p>;
   }
 
   return (
@@ -61,43 +41,24 @@ const NewsAnalytics = () => {
           <CardHeader>
             <CardTitle>Articles by Author</CardTitle>
             <CardDescription>
-              Distribution of articles by authors.
+              Distribution of articles by top authors.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <PieChart width={400} height={400}>
-              <Pie
-                data={authorData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-                label
-              />
-              <Tooltip />
-            </PieChart>
+          <CardContent className="mb-40 md:mb-0">
+            <AuthorPieChart articles={articles} />
           </CardContent>
         </Card>
 
         {/* Content Analysis */}
         <Card>
           <CardHeader>
-            <CardTitle>Article Trends</CardTitle>
+            <CardTitle>Articles by Author</CardTitle>
             <CardDescription>
-              Number of articles published by content type.
+              Distribution of articles by authors.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <BarChart width={500} height={300} data={typeData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" tick={{ fontSize: 10 }} />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#82ca9d" />
-            </BarChart>
+          <CardContent className="-ml-20 md:ml-0">
+            <ContentPieChart articles={articles} />
           </CardContent>
         </Card>
       </div>
