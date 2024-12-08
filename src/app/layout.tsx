@@ -4,7 +4,7 @@ import "./globals.css";
 import ReduxProviders from "@/redux/providers";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/sonner";
-import { auth } from "../../auth";
+import { auth } from "../config/auth";
 import Providers from "@/components/layouts/providers";
 
 const geistSans = localFont({
