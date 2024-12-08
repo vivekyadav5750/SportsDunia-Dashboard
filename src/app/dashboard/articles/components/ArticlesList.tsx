@@ -32,7 +32,7 @@ export function ArticlesList({ articles }: { articles: Article[] }) {
           </p>
           <p className="">{article.description}</p>
           <p className="mt-2 text-green-600">
-            Estimated Payout: ${payouts[article.url] || 0}
+            Estimated Payout:  ₹{payouts[article.url] || 0}
           </p>
           <a
             href={article.url}

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -12,7 +11,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import Logout from "@/hooks/logout";
-import {  useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 export function UserNav() {
   const { data: session } = useSession();
 
@@ -26,14 +25,16 @@ export function UserNav() {
                 src={session.user?.image ?? ""}
                 alt={session.user?.name ?? ""}
               />
-              <AvatarFallback>{session.user?.name?.[0]}</AvatarFallback>
+              <AvatarFallback>
+                {session.user?.name?.[0].toUpperCase() || "X"}
+              </AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
+              <p className="text-sm font-medium leading-none capitalize">
                 {session.user?.name}
               </p>
               <p className="text-xs leading-none text-muted-foreground">
@@ -42,7 +43,7 @@ export function UserNav() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup>
+          {/* <DropdownMenuGroup>
             <DropdownMenuItem>
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
@@ -56,7 +57,7 @@ export function UserNav() {
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>New Team</DropdownMenuItem>
-          </DropdownMenuGroup>
+          </DropdownMenuGroup> */}
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={Logout}>
             Log out

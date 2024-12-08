@@ -76,7 +76,7 @@ const PayoutAdmin = () => {
         <label htmlFor="payoutRate" className="block text-lg font-medium">
           Payout Rate per Article/Blog:
           <sup className="text-red-500">
-            * This rate will apply for all blog
+            * This rate will apply for all Blog
           </sup>
         </label>
         <div className="flex space-x-5">
@@ -93,7 +93,9 @@ const PayoutAdmin = () => {
       </div>
 
       <div className="mb-6">
-        <h2 className="text-xl font-semibold">Total Payout: ${totalPayout}</h2>
+        <h2 className="text-xl font-semibold">Total Payout: 
+          <span className="text-green-600">  ₹{totalPayout}</span>
+        </h2>
       </div>
 
       <PayoutTable

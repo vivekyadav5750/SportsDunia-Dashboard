@@ -1,19 +1,18 @@
-'use client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+"use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger
-} from '@/components/ui/collapsible';
+} from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -28,28 +27,25 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail
-} from '@/components/ui/sidebar';
-import { navItems } from '@/constants/data';
+} from "@/components/ui/sidebar";
+import { navItems } from "@/constants/data";
 import {
-  BadgeCheck,
-  Bell,
   ChevronRight,
   ChevronsUpDown,
-  CreditCard,
   GalleryVerticalEnd,
   LogOut
-} from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import * as React from 'react';
+} from "lucide-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import * as React from "react";
 import { Icons } from "@/components/icons";
-import Logout from '@/hooks/logout';
+import Logout from "@/hooks/logout";
 
 export const company = {
-  name: 'Acme Inc',
+  name: "SportsDunia",
   logo: GalleryVerticalEnd,
-  plan: 'Enterprise'
+  plan: "Enterprise"
 };
 
 export default function AppSidebar() {
@@ -65,7 +61,9 @@ export default function AppSidebar() {
             <company.logo className="size-4" />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">{company.name}</span>
+            <span className="truncate font-semibold uppercase">
+              {company.name}
+            </span>
             <span className="truncate text-xs">{company.plan}</span>
           </div>
         </div>
@@ -141,19 +139,19 @@ export default function AppSidebar() {
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
-                      src={session?.user?.image || ''}
-                      alt={session?.user?.name || ''}
+                      src={session?.user?.image || ""}
+                      alt={session?.user?.name || ""}
                     />
                     <AvatarFallback className="rounded-lg">
-                      {session?.user?.name?.slice(0, 2)?.toUpperCase() || 'CN'}
+                      {session?.user?.name?.slice(0, 2)?.toUpperCase() || "X"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
-                      {session?.user?.name || ''}
+                    <span className="truncate font-semibold capitalize">
+                      {session?.user?.name || ""}
                     </span>
                     <span className="truncate text-xs">
-                      {session?.user?.email || ''}
+                      {session?.user?.email || ""}
                     </span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
@@ -169,28 +167,27 @@ export default function AppSidebar() {
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage
-                        src={session?.user?.image || ''}
-                        alt={session?.user?.name || ''}
+                        src={session?.user?.image || ""}
+                        alt={session?.user?.name || ""}
                       />
                       <AvatarFallback className="rounded-lg">
-                        {session?.user?.name?.slice(0, 2)?.toUpperCase() ||
-                          'CN'}
+                        {session?.user?.name?.slice(0, 2)?.toUpperCase() || "X"}
                       </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">
-                        {session?.user?.name || ''}
+                      <span className="truncate font-semibold capitalize">
+                        {session?.user?.name || ""}
                       </span>
                       <span className="truncate text-xs">
-                        {' '}
-                        {session?.user?.email || ''}
+                        {" "}
+                        {session?.user?.email || ""}
                       </span>
                     </div>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
 
-                <DropdownMenuGroup>
+                {/* <DropdownMenuGroup>
                   <DropdownMenuItem>
                     <BadgeCheck />
                     Account
@@ -203,7 +200,7 @@ export default function AppSidebar() {
                     <Bell />
                     Notifications
                   </DropdownMenuItem>
-                </DropdownMenuGroup>
+                </DropdownMenuGroup> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={Logout}>
                   <LogOut />

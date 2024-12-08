@@ -1,5 +1,7 @@
 import React from "react";
 import { Type_Filters } from "../page";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function Filters({
   filters,
@@ -11,24 +13,24 @@ export default function Filters({
   return (
     <div className="mb-8 flex flex-wrap gap-6">
       <div className="flex items-center space-x-2">
-        <label htmlFor="author" className="font-medium">
+        <Label htmlFor="author" className="text-base text-nowrap">
           Author
-        </label>
-        <input
+        </Label>
+        <Input
           id="author"
           type="text"
           name="author"
           value={filters.author}
           onChange={handleFilterChange}
           placeholder="Search by author"
-          className="p-2 border rounded-md"
+          className="p-2 border rounded-md w-44"
         />
       </div>
       <div className="flex items-center space-x-2">
-        <label htmlFor="startDate" className="font-medium">
+        <Label htmlFor="startDate" className="text-base text-nowrap">
           Start Date
-        </label>
-        <input
+        </Label>
+        <Input
           id="startDate"
           type="date"
           name="startDate"
@@ -38,10 +40,10 @@ export default function Filters({
         />
       </div>
       <div className="flex items-center space-x-2">
-        <label htmlFor="endDate" className="font-medium">
+        <Label htmlFor="endDate" className="text-base text-nowrap">
           End Date
-        </label>
-        <input
+        </Label>
+        <Input
           id="endDate"
           type="date"
           name="endDate"
