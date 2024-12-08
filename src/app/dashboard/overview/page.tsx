@@ -7,6 +7,8 @@ import { fetchNews } from "@/redux/reducer";
 import { BarGraph } from "../overview/components/BarGraph";
 import Overview_Card from "./components/card";
 import Filters from "./components/filters";
+import ExportToCSV from "@/components/exports/ExportToCSV";
+import ExportToPDF from "@/components/exports/ExportToPDF";
 
 export interface Type_Filters {
   author: string;
@@ -68,13 +70,26 @@ const DashboardPage = () => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
+  const exportData = filteredArticles.map((article) => ({
+    Title: article.title,
+    Author: article.author || "Unknown",
+    PublishedAt: article.publishedAt
+  }));
+
   useEffect(() => {
     dispatch(fetchNews("sports"));
   }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 text-gray-900">
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+      <div className="mb-4 md:mb-0 flex flex-col sm:flex-row justify-between items-center sm:items-start sm:space-x-6">
+        <h1 className="text-3xl font-bold mb-6"> Dashboard</h1>
+
+        <div className="flex flex-wrap gap-4 sm:gap-6">
+          <ExportToCSV data={exportData} />
+          <ExportToPDF data={exportData} />
+        </div>
+      </div>
 
       {/* Overview Section */}
       <Overview_Card

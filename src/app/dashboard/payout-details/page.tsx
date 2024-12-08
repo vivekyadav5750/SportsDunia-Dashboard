@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { PayoutTable } from "@/app/dashboard/payout-details/components/PayoutTable";
 import { fetchNews } from "@/redux/reducer";
-import ExportToCSV from "./components/ExportToCSV";
-import ExportToPDF from "./components/ExportToPDF";
+import ExportToCSV from "@/components/exports/ExportToCSV";
+import ExportToPDF from "@/components/exports/ExportToPDF";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const PayoutAdmin = () => {
   const dispatch = useAppDispatch();
@@ -53,10 +55,10 @@ const PayoutAdmin = () => {
 
   // Combine payouts and articles for exporting
   const combinedData = articles.map((article) => ({
-    author: article.author || "Unknown",
-    title: article.title,
-    publishedAt: article.publishedAt,
-    payout: payouts[article.url] || 0
+    Author: article.author || "Unknown",
+    Title: article.title,
+    PublishedAt: article.publishedAt,
+    Payout: payouts[article.url] || 0
   }));
 
   return (
@@ -70,26 +72,24 @@ const PayoutAdmin = () => {
         </div>
       </div>
 
-      <div className="my-6">
+      <div className="my-6 space-y-2">
         <label htmlFor="payoutRate" className="block text-lg font-medium">
           Payout Rate per Article/Blog:
           <sup className="text-red-500">
             * This rate will apply for all blog
           </sup>
         </label>
-        <input
-          id="payoutRate"
-          type="number"
-          className="mt-2 p-2 border border-gray-300 rounded-md"
-          value={payoutRate}
-          onChange={handlePayoutRateChange}
-        />
-        <button
-          onClick={handleSetPayout}
-          className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-        >
-          Set Payout
-        </button>
+        <div className="flex space-x-5">
+          <Input
+            id="payoutRate"
+            type="number"
+            // className="mt-2 p-2 border border-gray-300 rounded-md"
+            className="w-24"
+            value={payoutRate}
+            onChange={handlePayoutRateChange}
+          />
+          <Button onClick={handleSetPayout}>Set Payout</Button>
+        </div>
       </div>
 
       <div className="mb-6">
