@@ -8,7 +8,7 @@ import { Github } from "lucide-react";
 export default function GithubSignInButton() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-
+  // console.log("callbackUrl", callbackUrl);
   return (
     <Button
       className="w-full"

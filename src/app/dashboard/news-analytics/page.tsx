@@ -28,7 +28,7 @@ const NewsAnalytics = () => {
   }
 
   if (error) {
-    return <p className="text-center text-red-500">Error: {error}</p>;
+    return <p className="text-center text-red-500 text-2xl my-4">Error: {error}</p>;
   }
 
   return (

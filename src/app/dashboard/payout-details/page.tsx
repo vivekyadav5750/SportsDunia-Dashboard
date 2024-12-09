@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 const PayoutAdmin = () => {
   const dispatch = useAppDispatch();
-  const { articles } = useAppSelector((state) => state.news);
+  const { articles, loading, error } = useAppSelector((state) => state.news);
 
   const [payouts, setPayouts] = useState<{ [key: string]: number }>(() => {
     const storedPayouts = localStorage.getItem("payouts");
@@ -71,6 +71,9 @@ const PayoutAdmin = () => {
           <ExportToPDF data={combinedData} />
         </div>
       </div>
+
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500 text-2xl my-4">{error}</p>}
 
       <div className="my-6 space-y-2">
         <label htmlFor="payoutRate" className="block text-lg font-medium">

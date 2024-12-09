@@ -70,7 +70,7 @@ export default function DashboardPage() {
 
       {/* Articles List */}
       {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 text-2xl my-4">{error}</p>}
       <ArticlesList articles={filteredArticles} />
     </div>
   );

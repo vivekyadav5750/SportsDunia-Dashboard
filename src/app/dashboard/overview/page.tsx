@@ -18,7 +18,7 @@ export interface Type_Filters {
 
 const DashboardPage = () => {
   const dispatch = useAppDispatch();
-  const { articles } = useAppSelector((state: RootState) => state.news);
+  const { articles,loading, error } = useAppSelector((state: RootState) => state.news);
 
   const [filters, setFilters] = useState<Type_Filters>({
     author: "",
@@ -90,6 +90,9 @@ const DashboardPage = () => {
           <ExportToPDF data={exportData} />
         </div>
       </div>
+
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500 text-2xl my-4">{error}</p>}
 
       {/* Overview Section */}
       <Overview_Card
