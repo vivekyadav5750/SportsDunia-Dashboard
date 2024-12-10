@@ -1,5 +1,5 @@
 import React from "react";
-import { Type_Filters } from "../page";
+import { Type_Filters } from "./main";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
