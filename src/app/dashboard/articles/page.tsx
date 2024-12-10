@@ -1,77 +1,37 @@
-"use client";
-import { useEffect, useState } from "react";
-import { fetchNews } from "@/redux/reducer";
-import { RootState } from "@/redux/store";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import ArticlesList from "./components/ArticlesList";
-import Filters from "./components/Filters";
+import MainComponent from "./components/MainComponent";
+import { Article, NewsApiResponse } from "@/types";
 
-export type DateRange = {
-  start: string;
-  end: string;
-};
+export default async function DashboardPage() {
+  let articles: Article[] = [];
 
-export default function DashboardPage() {
-  const dispatch = useAppDispatch();
-  const { articles, loading, error } = useAppSelector(
-    (state: RootState) => state.news
-  );
+  // call api to get the data for the category
+  try {
+    const response = await fetch(
+      `https://newsapi.org/v2/everything?q=sports&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
+    );
 
-  const [filteredArticles, setFilteredArticles] = useState(articles);
-  const [author, setAuthor] = useState("");
-  const [dateRange, setDateRange] = useState<DateRange>({ start: "", end: "" });
-  const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    dispatch(fetchNews("sports"));
-  }, [dispatch]);
-
-  useEffect(() => {
-    let updatedArticles = articles;
-    updatedArticles = updatedArticles.filter((article) => article.author);
-
-    if (author) {
-      updatedArticles = updatedArticles.filter((article) =>
-        article.author?.toLowerCase().includes(author.toLowerCase())
-      );
+    if (!response.ok) {
+      //TODO: handle error and show error message to user
+      return <div>Server error : {response.status} </div>;
     }
 
-    if (dateRange.start && dateRange.end) {
-      updatedArticles = updatedArticles.filter((article) => {
-        const publishedDate = new Date(article.publishedAt);
-        const startDate = new Date(dateRange.start);
-        const endDate = new Date(dateRange.end);
-        return publishedDate >= startDate && publishedDate <= endDate;
-      });
-    }
+    const ArticleData = (await response.json()) as NewsApiResponse;
+    articles = ArticleData.articles;
 
-    if (searchQuery) {
-      updatedArticles = updatedArticles.filter((article) =>
-        article.title?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    if (!articles) {
+      return <div>No data found</div>;
     }
+  } catch (error) {
+    console.log("error: ", error);
+    return <div>No data found</div>;
+  }
 
-    setFilteredArticles(updatedArticles);
-  }, [articles, author, dateRange, searchQuery]);
+  // Filter Data (author is null)
+  articles = articles.filter((article) => article.author !== null);
 
   return (
     <div className="p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-4">Sports News</h1>
-
-      {/* Filters Section */}
-      <Filters
-        author={author}
-        setAuthor={setAuthor}
-        dateRange={dateRange}
-        setDateRange={setDateRange}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-
-      {/* Articles List */}
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500 text-2xl my-4">{error}</p>}
-      <ArticlesList articles={filteredArticles} />
+      <MainComponent articles={articles} />
     </div>
   );
 }

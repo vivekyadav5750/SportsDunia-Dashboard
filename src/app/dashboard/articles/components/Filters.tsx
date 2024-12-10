@@ -1,5 +1,5 @@
 "use client";
-import {DateRange} from "@/app/dashboard/articles/page";
+import {DateRange} from "@/app/dashboard/articles/components/MainComponent";
 
 export default function Filters({
   author,

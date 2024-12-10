@@ -1,69 +1,37 @@
-// pages/NewsAnalytics.tsx
+import MainComponent from "./components/MainComponent";
+import { Article, NewsApiResponse } from "@/types";
 
-"use client";
+export default async function NewsAnalytics() {
+  let articles: Article[] = [];
 
-import React, { useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { fetchNews } from "@/redux/reducer";
-import AuthorPieChart from "./components/AuthorPieChart";
-import ContentPieChart from "./components/ContentPieChart";
+  // call api to get the data for the category
+  try {
+    const response = await fetch(
+      `https://newsapi.org/v2/everything?q=sports&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
+    );
 
-const NewsAnalytics = () => {
-  const dispatch = useAppDispatch();
-  const { articles, loading, error } = useAppSelector((state) => state.news);
+    if (!response.ok) {
+      //TODO: handle error and show error message to user
+      return <div>Server error : {response.status} </div>;
+    }
 
-  useEffect(() => {
-    dispatch(fetchNews("sports"));
-  }, [dispatch]);
+    const ArticleData = (await response.json()) as NewsApiResponse;
+    articles = ArticleData.articles;
 
-  if (loading) {
-    return <p className="text-center">Loading...</p>;
+    if (!articles) {
+      return <div>No data found</div>;
+    }
+  } catch (error) {
+    console.log("error: ", error);
+    return <div>No data found</div>;
   }
 
-  if (error) {
-    return <p className="text-center text-red-500 text-2xl my-4">Error: {error}</p>;
-  }
+  // Filter Data (author is null)
+  articles = articles.filter((article) => article.author !== null);
 
   return (
     <div className="p-6 space-y-8">
-      <h1 className="text-3xl font-bold mb-6">News Analytics</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Author Analysis */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Articles by Author</CardTitle>
-            <CardDescription>
-              Distribution of articles by top authors.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="mb-40 md:mb-0">
-            <AuthorPieChart articles={articles} />
-          </CardContent>
-        </Card>
-
-        {/* Content Analysis */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Articles by Author</CardTitle>
-            <CardDescription>
-              Distribution of articles by authors.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="-ml-20 md:ml-0">
-            <ContentPieChart articles={articles} />
-          </CardContent>
-        </Card>
-      </div>
+      <MainComponent articles={articles} />
     </div>
   );
-};
-
-export default NewsAnalytics;
+}
